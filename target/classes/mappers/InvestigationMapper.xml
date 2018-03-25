@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xdc.dao.InvestigationDao">
+
+	<sql id="selector">
+		select *
+		from gy_investigation
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="where">
+		<where>
+			<if test="invId != null">
+				and invId = #{invId}
+			</if>
+			<if test="projectId != null">
+				<if test="projectIdLike == false">
+					and projectId = #{projectId}
+				</if>
+				<if test="projectIdLike == true">
+					and projectId like "%"#{projectId}"%"
+				</if>
+			</if>
+			<if test="invName != null">
+				<if test="invNameLike == false">
+					and invName = #{invName}
+				</if>
+				<if test="invNameLike == true">
+					and invName like "%"#{invName}"%"
+				</if>
+			</if>
+			<if test="invType != null">
+				<if test="invTypeLike == false">
+					and invType = #{invType}
+				</if>
+				<if test="invTypeLike == true">
+					and invType like "%"#{invType}"%"
+				</if>
+			</if>
+			<if test="cTime != null">
+				<if test="cTimeLike == false">
+					and cTime = #{cTime}
+				</if>
+				<if test="cTimeLike == true">
+					and cTime like "%"#{cTime}"%"
+				</if>
+			</if>
+			<if test="sTime != null">
+				<if test="sTimeLike == false">
+					and sTime = #{sTime}
+				</if>
+				<if test="sTimeLike == true">
+					and sTime like "%"#{sTime}"%"
+				</if>
+			</if>
+			<if test="bTime != null">
+				<if test="bTimeLike == false">
+					and bTime = #{bTime}
+				</if>
+				<if test="bTimeLike == true">
+					and bTime like "%"#{bTime}"%"
+				</if>
+			</if>
+			<if test="eTime != null">
+				<if test="eTimeLike == false">
+					and eTime = #{eTime}
+				</if>
+				<if test="eTimeLike == true">
+					and eTime like "%"#{eTime}"%"
+				</if>
+			</if>
+			<if test="invStatus != null">
+				<if test="invStatusLike == false">
+					and invStatus = #{invStatus}
+				</if>
+				<if test="invStatusLike == true">
+					and invStatus like "%"#{invStatus}"%"
+				</if>
+			</if>
+			<if test="totalNum != null">
+				<if test="totalNumLike == false">
+					and totalNum = #{totalNum}
+				</if>
+				<if test="totalNumLike == true">
+					and totalNum like "%"#{totalNum}"%"
+				</if>
+			</if>
+			<if test="isRecord != null">
+				<if test="isRecordLike == false">
+					and isRecord = #{isRecord}
+				</if>
+				<if test="isRecordLike == true">
+					and isRecord like "%"#{isRecord}"%"
+				</if>
+			</if>
+			<if test="invSummary != null">
+				<if test="invSummaryLike == false">
+					and invSummary = #{invSummary}
+				</if>
+				<if test="invSummaryLike == true">
+					and invSummary like "%"#{invSummary}"%"
+				</if>
+			</if>
+			<if test="editor != null">
+				<if test="editorLike == false">
+					and editor = #{editor}
+				</if>
+				<if test="editorLike == true">
+					and editor like "%"#{editor}"%"
+				</if>
+			</if>
+			<if test="groupLeaderId != null">
+				<if test="groupLeaderIdLike == false">
+					and groupLeaderId = #{groupLeaderId}
+				</if>
+				<if test="groupLeaderIdLike == true">
+					and groupLeaderId like "%"#{groupLeaderId}"%"
+				</if>
+			</if>
+			<if test="missionStatement != null">
+				<if test="missionStatementLike == false">
+					and missionStatement = #{missionStatement}
+				</if>
+				<if test="missionStatementLike == true">
+					and missionStatement like "%"#{missionStatement}"%"
+				</if>
+			</if>
+			<if test="comment != null">
+				<if test="commentLike == false">
+					and comment = #{comment}
+				</if>
+				<if test="commentLike == true">
+					and comment like "%"#{comment}"%"
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<!-- Order by -->
+	<sql id="orderBy">
+	</sql>
+
+	<!-- 查询集合 -->
+	<select id="getInvestigationList" parameterType="InvestigationQuery" resultType="InvestigationVo">
+		<include refid="selector"/>
+		<include refid="where"/>
+		<include refid="orderBy"/>
+	</select>
+
+	<!-- 分页 -->
+	<select id="getInvestigationListWithPage" parameterType="InvestigationQuery" resultType="InvestigationVo">
+		<include refid="selector" />
+		<include refid="where" />
+		<include refid="limit" />
+	</select>
+
+	<sql id="limit">
+		<if test="startRow != null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</sql>
+
+	<!-- 数据总数 -->
+	<select id="getInvestigationListCount" parameterType="InvestigationQuery" resultType="int">
+		SELECT count(1) FROM gy_investigation
+		<include refid="where"/>
+	</select>
+
+	<!-- 添加 -->
+	<insert id="addInvestigation" parameterType="Investigation">
+		<selectKey keyProperty="invId" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into gy_investigation
+		<trim prefix="(" suffix=")">
+				projectId,
+				invName,
+				invType,
+				cTime,
+				sTime,
+				bTime,
+				eTime,
+				invStatus,
+				totalNum,
+				isRecord,
+				invSummary,
+				editor,
+				groupLeaderId,
+				missionStatement,
+				comment
+		</trim>
+		values
+		<trim prefix="(" suffix=")">
+				#{projectId},
+				#{invName},
+				#{invType},
+				#{cTime},
+				#{sTime},
+				#{bTime},
+				#{eTime},
+				#{invStatus},
+				#{totalNum},
+				#{isRecord},
+				#{invSummary},
+				#{editor},
+				#{groupLeaderId},
+				#{missionStatement},
+				#{comment}
+		</trim>
+	</insert>
+
+	<!-- 删除 通过主键 -->
+	<delete id="deleteInvestigationByKey" parameterType="Integer">
+		delete from gy_investigation
+		<where>
+			invId = #{invId}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteInvestigationByKeys" parameterType="Integer">
+		delete from gy_investigation
+		<where>
+			invId in
+			<foreach collection="array" item="invId" open="(" close=")" separator="," >
+				#{invId}
+			</foreach>
+		</where>
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateInvestigationByKey" parameterType="Investigation">
+		update gy_investigation
+		<set>
+			<if test="projectId != null">
+				projectId = #{projectId},
+			</if>
+			<if test="invName != null">
+				invName = #{invName},
+			</if>
+			<if test="invType != null">
+				invType = #{invType},
+			</if>
+			<if test="cTime != null">
+				cTime = #{cTime},
+			</if>
+			<if test="sTime != null">
+				sTime = #{sTime},
+			</if>
+			<if test="bTime != null">
+				bTime = #{bTime},
+			</if>
+			<if test="eTime != null">
+				eTime = #{eTime},
+			</if>
+			<if test="invStatus != null">
+				invStatus = #{invStatus},
+			</if>
+			<if test="totalNum != null">
+				totalNum = #{totalNum},
+			</if>
+			<if test="isRecord != null">
+				isRecord = #{isRecord},
+			</if>
+			<if test="invSummary != null">
+				invSummary = #{invSummary},
+			</if>
+			<if test="editor != null">
+				editor = #{editor},
+			</if>
+			<if test="groupLeaderId != null">
+				groupLeaderId = #{groupLeaderId},
+			</if>
+			<if test="missionStatement != null">
+				missionStatement = #{missionStatement},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		<where>
+			invId = #{invId}
+		</where>
+	</update>
+
+	<!-- 通过ID查询一个品牌对象 -->
+	<select id="getInvestigationByKey" parameterType="Integer" resultType="InvestigationVo">
+		select *
+		from gy_investigation
+		<where>
+			invId = #{invId}
+		</where>
+	</select>
+
+</mapper>
+

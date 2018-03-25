@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xdc.dao.OptionDao">
+
+	<resultMap type="Option" id="optionMap">
+		<result column="optionId" property="optionId"/>
+		<result column="qId" property="qId"/>
+		<result column="viewOrder" property="viewOrder"/>
+		<result column="desc" property="desc"/>
+		<result column="picUrl" property="picUrl"/>
+		<result column="comment" property="comment"/>
+	</resultMap>
+
+	<sql id="selector">
+		select *
+		from gy_option
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="where">
+	</sql>
+
+	<!-- Order by -->
+	<sql id="orderBy">
+	</sql>
+
+	<!-- 查询集合 -->
+	<select id="getOptionList" parameterType="OptionQuery" resultMap="optionMap">
+		<include refid="selector"/>
+		<include refid="where"/>
+		<include refid="orderBy"/>
+	</select>
+
+	<!-- 添加 -->
+	<insert id="addOption" parameterType="Option">
+		insert into gy_option
+		<trim prefix="(" suffix=")">
+				qId,
+				viewOrder,
+				desc,
+				picUrl,
+				comment
+		</trim>
+		values
+		<trim prefix="(" suffix=")">
+				#{qId},
+				#{viewOrder},
+				#{desc},
+				#{picUrl},
+				#{comment}
+		</trim>
+	</insert>
+
+	<!-- 删除 通过主键 -->
+	<delete id="deleteOptionByKey" parameterType="Integer">
+		delete from gy_option
+		<where>
+			optionId = #{optionId}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteOptionByKeys" parameterType="Integer">
+		delete from gy_option
+		<where>
+			optionId in
+			<foreach collection="array" item="id" open="(" close=")" separator="," >
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateOptionByKey" parameterType="Option">
+		update gy_option
+		<set>
+			<if test="qId != null">
+				qId = #{qId},
+			</if>
+			<if test="viewOrder != null">
+				viewOrder = #{viewOrder},
+			</if>
+			<if test="desc != null">
+				desc = #{desc},
+			</if>
+			<if test="picUrl != null">
+				picUrl = #{picUrl},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		<where>
+			optionId = #{optionId}
+		</where>
+	</update>
+
+	<!-- 通过ID查询一个品牌对象 -->
+	<select id="getOptionByKey" parameterType="Integer" resultMap="optionMap">
+		select *
+		from gy_option
+		<where>
+			optionId = #{optionId}
+		</where>
+	</select>
+
+</mapper>
+

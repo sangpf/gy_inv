@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xdc.dao.QuestionDao">
+
+	<resultMap type="Question" id="questionMap">
+		<result column="qId" property="qId"/>
+		<result column="qTitle" property="qTitle"/>
+		<result column="invId" property="invId"/>
+		<result column="titleImg" property="titleImg"/>
+		<result column="qNum" property="qNum"/>
+		<result column="qType" property="qType"/>
+		<result column="required" property="required"/>
+		<result column="comment" property="comment"/>
+	</resultMap>
+
+	<sql id="selector">
+		select *
+		from gy_question
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="where">
+		<where>
+			<if test="qId != null">
+				and qId = #{qId}
+			</if>
+			<if test="qTitle != null">
+				<if test="qTitleLike == false">
+					and qTitle = #{qTitle}
+				</if>
+				<if test="qTitleLike == true">
+					and qTitle like "%"#{qTitle}"%"
+				</if>
+			</if>
+			<if test="invId != null">
+				<if test="invIdLike == false">
+					and invId = #{invId}
+				</if>
+				<if test="invIdLike == true">
+					and invId like "%"#{invId}"%"
+				</if>
+			</if>
+			<if test="titleImg != null">
+				<if test="titleImgLike == false">
+					and titleImg = #{titleImg}
+				</if>
+				<if test="titleImgLike == true">
+					and titleImg like "%"#{titleImg}"%"
+				</if>
+			</if>
+			<if test="qNum != null">
+				<if test="qNumLike == false">
+					and qNum = #{qNum}
+				</if>
+				<if test="qNumLike == true">
+					and qNum like "%"#{qNum}"%"
+				</if>
+			</if>
+			<if test="qType != null">
+				<if test="qTypeLike == false">
+					and qType = #{qType}
+				</if>
+				<if test="qTypeLike == true">
+					and qType like "%"#{qType}"%"
+				</if>
+			</if>
+			<if test="required != null">
+				<if test="requiredLike == false">
+					and required = #{required}
+				</if>
+				<if test="requiredLike == true">
+					and required like "%"#{required}"%"
+				</if>
+			</if>
+			<if test="comment != null">
+				<if test="commentLike == false">
+					and comment = #{comment}
+				</if>
+				<if test="commentLike == true">
+					and comment like "%"#{comment}"%"
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<!-- Order by -->
+	<sql id="orderBy">
+	</sql>
+
+	<!-- 查询集合 -->
+	<select id="getQuestionList" parameterType="QuestionQuery" resultMap="questionMap">
+		<include refid="selector"/>
+		<include refid="where"/>
+		<include refid="orderBy"/>
+	</select>
+
+	<!-- 添加 -->
+	<insert id="addQuestion" parameterType="Question">
+		<selectKey keyProperty="qId" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into gy_question
+		<trim prefix="(" suffix=")">
+				qTitle,
+				invId,
+				titleImg,
+				qNum,
+				qType,
+				required,
+				comment
+		</trim>
+		values
+		<trim prefix="(" suffix=")">
+				#{qTitle},
+				#{invId},
+				#{titleImg},
+				#{qNum},
+				#{qType},
+				#{required},
+				#{comment}
+		</trim>
+	</insert>
+
+	<!-- 删除 通过主键 -->
+	<delete id="deleteQuestionByKey" parameterType="Integer">
+		delete from gy_question
+		<where>
+			qId = #{qId}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteQuestionByKeys" parameterType="Integer">
+		delete from gy_question
+		<where>
+			qId in
+			<foreach collection="array" item="qId" open="(" close=")" separator="," >
+				#{qId}
+			</foreach>
+		</where>
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateQuestionByKey" parameterType="Question">
+		update gy_question
+		<set>
+			<if test="qTitle != null">
+				qTitle = #{qTitle},
+			</if>
+			<if test="invId != null">
+				invId = #{invId},
+			</if>
+			<if test="titleImg != null">
+				titleImg = #{titleImg},
+			</if>
+			<if test="qNum != null">
+				qNum = #{qNum},
+			</if>
+			<if test="qType != null">
+				qType = #{qType},
+			</if>
+			<if test="required != null">
+				required = #{required},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		<where>
+			qId = #{qId}
+		</where>
+	</update>
+
+	<!-- 通过ID查询一个品牌对象 -->
+	<select id="getQuestionByKey" parameterType="Integer" resultMap="questionMap">
+		select *
+		from gy_question
+		<where>
+			qId = #{qId}
+		</where>
+	</select>
+
+</mapper>
+

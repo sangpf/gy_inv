@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xdc.dao.ProjectDao">
+
+	<sql id="selector">
+		select *
+		from gy_project
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="where">
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="title != null">
+				<if test="titleLike == false">
+					and title = #{title}
+				</if>
+				<if test="titleLike == true">
+					and title like "%"#{title}"%"
+				</if>
+			</if>
+			<if test="type != null">
+				<if test="typeLike == false">
+					and type = #{type}
+				</if>
+				<if test="typeLike == true">
+					and type like "%"#{type}"%"
+				</if>
+			</if>
+			<if test="cTime != null">
+				<if test="cTimeLike == false">
+					and cTime = #{cTime}
+				</if>
+				<if test="cTimeLike == true">
+					and cTime like "%"#{cTime}"%"
+				</if>
+			</if>
+			<if test="bTime != null">
+				<if test="bTimeLike == false">
+					and bTime = #{bTime}
+				</if>
+				<if test="bTimeLike == true">
+					and bTime like "%"#{bTime}"%"
+				</if>
+			</if>
+			<if test="eTime != null">
+				<if test="eTimeLike == false">
+					and eTime = #{eTime}
+				</if>
+				<if test="eTimeLike == true">
+					and eTime like "%"#{eTime}"%"
+				</if>
+			</if>
+			<if test="status != null">
+				<if test="statusLike == false">
+					and status = #{status}
+				</if>
+				<if test="statusLike == true">
+					and status like "%"#{status}"%"
+				</if>
+			</if>
+			<if test="summary != null">
+				<if test="summaryLike == false">
+					and summary = #{summary}
+				</if>
+				<if test="summaryLike == true">
+					and summary like "%"#{summary}"%"
+				</if>
+			</if>
+			<if test="targetNum != null">
+				<if test="targetNumLike == false">
+					and targetNum = #{targetNum}
+				</if>
+				<if test="targetNumLike == true">
+					and targetNum like "%"#{targetNum}"%"
+				</if>
+			</if>
+			<if test="managerId != null">
+				<if test="managerIdLike == false">
+					and managerId = #{managerId}
+				</if>
+				<if test="managerIdLike == true">
+					and managerId like "%"#{managerId}"%"
+				</if>
+			</if>
+			<if test="supervisionId != null">
+				<if test="supervisionIdLike == false">
+					and supervisionId = #{supervisionId}
+				</if>
+				<if test="supervisionIdLike == true">
+					and supervisionId like "%"#{supervisionId}"%"
+				</if>
+			</if>
+			<if test="qualityId != null">
+				<if test="qualityIdLike == false">
+					and qualityId = #{qualityId}
+				</if>
+				<if test="qualityIdLike == true">
+					and qualityId like "%"#{qualityId}"%"
+				</if>
+			</if>
+			<if test="clientName != null">
+				<if test="clientNameLike == false">
+					and clientName = #{clientName}
+				</if>
+				<if test="clientNameLike == true">
+					and clientName like "%"#{clientName}"%"
+				</if>
+			</if>
+			<if test="clientPhone != null">
+				<if test="clientPhoneLike == false">
+					and clientPhone = #{clientPhone}
+				</if>
+				<if test="clientPhoneLike == true">
+					and clientPhone like "%"#{clientPhone}"%"
+				</if>
+			</if>
+			<if test="clientCompany != null">
+				<if test="clientCompanyLike == false">
+					and clientCompany = #{clientCompany}
+				</if>
+				<if test="clientCompanyLike == true">
+					and clientCompany like "%"#{clientCompany}"%"
+				</if>
+			</if>
+			<if test="clientAddress != null">
+				<if test="clientAddressLike == false">
+					and clientAddress = #{clientAddress}
+				</if>
+				<if test="clientAddressLike == true">
+					and clientAddress like "%"#{clientAddress}"%"
+				</if>
+			</if>
+			<if test="comment != null">
+				<if test="commentLike == false">
+					and comment = #{comment}
+				</if>
+				<if test="commentLike == true">
+					and comment like "%"#{comment}"%"
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<!-- Order by -->
+	<sql id="orderBy">
+	</sql>
+
+	<!-- 查询集合 -->
+	<select id="getProjectList" parameterType="ProjectQuery" resultType="ProjectVo">
+		<include refid="selector"/>
+		<include refid="where"/>
+		<include refid="orderBy"/>
+	</select>
+
+	<!-- 分页 -->
+	<select id="getProjectListWithPage" parameterType="ProjectQuery" resultType="ProjectVo">
+		<include refid="selector" />
+		<include refid="where" />
+		<include refid="limit" />
+	</select>
+
+	<sql id="limit">
+		<if test="startRow != null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</sql>
+
+	<!-- 数据总数 -->
+	<select id="getProjectListCount" parameterType="ProjectQuery" resultType="int">
+		SELECT count(1) FROM gy_project
+		<include refid="where" />
+	</select>
+
+	<!-- 添加 -->
+	<insert id="addProject" parameterType="Project">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into gy_project
+		<trim prefix="(" suffix=")">
+				title,
+				type,
+				cTime,
+				bTime,
+				eTime,
+				status,
+				summary,
+				targetNum,
+				managerId,
+				supervisionId,
+				qualityId,
+				clientName,
+				clientPhone,
+				clientCompany,
+				clientAddress,
+				comment
+		</trim>
+		values
+		<trim prefix="(" suffix=")">
+				#{title},
+				#{type},
+				#{cTime},
+				#{bTime},
+				#{eTime},
+				#{status},
+				#{summary},
+				#{targetNum},
+				#{managerId},
+				#{supervisionId},
+				#{qualityId},
+				#{clientName},
+				#{clientPhone},
+				#{clientCompany},
+				#{clientAddress},
+				#{comment}
+		</trim>
+	</insert>
+
+	<!-- 删除 通过主键 -->
+	<delete id="deleteProjectByKey" parameterType="Integer">
+		delete from gy_project
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteProjectByKeys" parameterType="Integer">
+		delete from gy_project
+		<where>
+			id in
+			<foreach collection="array" item="id" open="(" close=")" separator="," >
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateProjectByKey" parameterType="Project">
+		update gy_project
+		<set>
+			<if test="title != null">
+				title = #{title},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="cTime != null">
+				cTime = #{cTime},
+			</if>
+			<if test="bTime != null">
+				bTime = #{bTime},
+			</if>
+			<if test="eTime != null">
+				eTime = #{eTime},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="summary != null">
+				summary = #{summary},
+			</if>
+			<if test="targetNum != null">
+				targetNum = #{targetNum},
+			</if>
+			<if test="managerId != null">
+				managerId = #{managerId},
+			</if>
+			<if test="supervisionId != null">
+				supervisionId = #{supervisionId},
+			</if>
+			<if test="qualityId != null">
+				qualityId = #{qualityId},
+			</if>
+			<if test="clientName != null">
+				clientName = #{clientName},
+			</if>
+			<if test="clientPhone != null">
+				clientPhone = #{clientPhone},
+			</if>
+			<if test="clientCompany != null">
+				clientCompany = #{clientCompany},
+			</if>
+			<if test="clientAddress != null">
+				clientAddress = #{clientAddress},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 通过ID查询一个品牌对象 -->
+	<select id="getProjectByKey" parameterType="Integer" resultType="Project">
+		select *
+		from gy_project
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+</mapper>
+
