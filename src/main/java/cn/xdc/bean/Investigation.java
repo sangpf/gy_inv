@@ -70,6 +70,10 @@ public class Investigation implements Serializable{
 		return DateUtil.getStringByDateFormat(bTime);
 	}
 
+	public Date getDateBTime() {
+		return bTime;
+	}
+
 	public void setBTime(Date bTime) {
 		this.bTime = bTime;
 	}
@@ -77,6 +81,11 @@ public class Investigation implements Serializable{
 	public String getETime() {
 		return DateUtil.getStringByDateFormat(eTime);
 	}
+
+	public Date getDateETime() {
+		return eTime;
+	}
+
 	public void setETime(Date eTime) {
 		this.eTime = eTime;
 	}

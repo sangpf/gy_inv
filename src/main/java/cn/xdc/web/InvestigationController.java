@@ -1,17 +1,15 @@
 package cn.xdc.web;
 
-import cn.xdc.bean.Inv_User;
+import cn.xdc.bean.Inv_user;
 import cn.xdc.bean.Investigation;
 import cn.xdc.bean.User;
 import cn.xdc.bean.query.InvestigationQuery;
 import cn.xdc.bean.vo.InvestigationVo;
 import cn.xdc.common.page.Pagination;
-import cn.xdc.service.Inv_UserService;
+import cn.xdc.service.Inv_userService;
 import cn.xdc.service.InvestigationService;
 import cn.xdc.service.UserService;
 import cn.xdc.utils.AjaxResult;
-import cn.xdc.utils.DateUtil;
-import cn.xdc.utils.StrUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -36,7 +34,7 @@ public class InvestigationController {
     @Autowired
     private InvestigationService investigationService;
     @Autowired
-    private Inv_UserService inv_UserService;
+    private Inv_userService inv_userService;
     @Autowired
     private UserService userService;
 
@@ -58,13 +56,13 @@ public class InvestigationController {
             // 添加组员
             if (userIds != null && userIds.length > 0){
                 for (Integer userId : userIds){
-                    Inv_User inv_user = new Inv_User();
+                    Inv_user inv_user = new Inv_user();
                     inv_user.setUserId(userId);
                     inv_user.setInvId(investigation.getInvId());
                     inv_user.setRole(1);
                     inv_user.setDistributionNum(100);
                     try {
-                        inv_UserService.addInv_User(inv_user);
+                        inv_userService.addInv_user(inv_user);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -126,9 +124,6 @@ public class InvestigationController {
         InvestigationQuery investigationQuery = new InvestigationQuery();
         //设置页号
         investigationQuery.setPageNo(Pagination.cpn(pageNo));
-        //设置每页数
-        investigationQuery.setPageSize(5);
-
         Pagination pagination = investigationService.getInvestigationListWithPage(investigationQuery);
 
         return AjaxResult.successData(pagination);

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.xdc.dao.Inv_userDao">
+
+	<sql id="selector">
+		select *
+		from gy_inv_user
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="where">
+		<where>
+			<if test="invId != null">
+				and invId = #{invId}
+			</if>
+			<if test="userId != null">
+				<if test="userIdLike == false">
+					and userId = #{userId}
+				</if>
+				<if test="userIdLike == true">
+					and userId like "%"#{userId}"%"
+				</if>
+			</if>
+			<if test="role != null">
+				<if test="roleLike == false">
+					and role = #{role}
+				</if>
+				<if test="roleLike == true">
+					and role like "%"#{role}"%"
+				</if>
+			</if>
+			<if test="distributionNum != null">
+				<if test="distributionNumLike == false">
+					and distributionNum = #{distributionNum}
+				</if>
+				<if test="distributionNumLike == true">
+					and distributionNum like "%"#{distributionNum}"%"
+				</if>
+			</if>
+			<if test="comment != null">
+				<if test="commentLike == false">
+					and comment = #{comment}
+				</if>
+				<if test="commentLike == true">
+					and comment like "%"#{comment}"%"
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<!-- Order by -->
+	<sql id="orderBy">
+	</sql>
+
+	<!-- 查询集合 -->
+	<select id="getInv_userList" parameterType="Inv_userQuery" resultType="Inv_userVo">
+		<include refid="selector"/>
+		<include refid="where"/>
+		<include refid="orderBy"/>
+	</select>
+
+	<!-- 分页 -->
+	<select id="getInv_userListWithPage" parameterType="Inv_userQuery" resultType="Inv_userVo">
+		<include refid="selector" />
+		<include refid="where" />
+		<include refid="limit" />
+	</select>
+
+	<sql id="limit">
+		<if test="startRow != null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</sql>
+
+	<!-- 数据总数 -->
+	<select id="getInv_userListCount" parameterType="Inv_userQuery" resultType="int">
+		SELECT count(1) FROM gy_inv_user
+		<include refid="where"/>
+	</select>
+
+	<!-- 添加 -->
+	<insert id="addInv_user" parameterType="Inv_user">
+		insert into gy_inv_user
+		<trim prefix="(" suffix=")">
+				userId,
+				role,
+				distributionNum,
+				comment
+		</trim>
+		values
+		<trim prefix="(" suffix=")">
+				#{userId},
+				#{role},
+				#{distributionNum},
+				#{comment}
+		</trim>
+	</insert>
+
+	<!-- 删除 通过主键 -->
+	<delete id="deleteInv_userByKey" parameterType="Integer">
+		delete from gy_inv_user
+		<where>
+			invId = #{invId}
+		</where>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteInv_userByKeys" parameterType="Integer">
+		delete from gy_inv_user
+		<where>
+			invId in
+			<foreach collection="array" item="invId" open="(" close=")" separator="," >
+				#{invId}
+			</foreach>
+		</where>
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateInv_userByKey" parameterType="Inv_user">
+		update gy_inv_user
+		<set>
+			<if test="userId != null">
+				userId = #{userId},
+			</if>
+			<if test="role != null">
+				role = #{role},
+			</if>
+			<if test="distributionNum != null">
+				distributionNum = #{distributionNum},
+			</if>
+			<if test="comment != null">
+				comment = #{comment},
+			</if>
+		</set>
+		<where>
+			invId = #{invId}
+		</where>
+	</update>
+
+	<!-- 通过ID查询一个品牌对象 -->
+	<select id="getInv_userByKey" parameterType="Integer" resultType="Inv_user">
+		select *
+		from gy_inv_user
+		<where>
+			invId = #{invId}
+		</where>
+	</select>
+
+</mapper>
+

@@ -19,8 +19,8 @@ public class Project implements Serializable{
 	private Integer managerId;
 	private Integer supervisionId;
 	private Integer qualityId;
-	private String clientName;
-	private String clientPhone;
+	private String clientName;  // 委托人姓名
+	private String clientPhone;  // 委托人电话
 	private String clientCompany;
 	private String clientAddress;
 	private String comment;

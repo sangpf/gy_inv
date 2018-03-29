@@ -1,6 +1,9 @@
 package cn.xdc.bean;
 
+import cn.xdc.utils.DateUtil;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -13,6 +16,7 @@ public class User implements Serializable{
 	private String name;
 	private Integer age;
 	private String img;
+	private Date cTime;
 	private Integer gender;
 	private String evaluation;
 	private String identityId;
@@ -20,6 +24,17 @@ public class User implements Serializable{
 	private String telephone;
 	private Integer isValid;
 	private String comment;
+
+	public String getcTime() {
+		return DateUtil.getStringByDateFormat(cTime);
+	}
+	public Date getDate_cTime(){
+		return cTime;
+	}
+
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
+	}
 
 	public Integer getUserId() {
 		return userId;

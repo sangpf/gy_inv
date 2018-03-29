@@ -85,17 +85,6 @@ public class ProjectController {
 
         List<ProjectVo> projectList = projectService.getProjectList(projectQuery);
 
-        Iterator<ProjectVo> iterator = projectList.iterator();
-        // 封装项目经理姓名
-        while (iterator.hasNext()){
-            ProjectVo next = iterator.next();
-            Integer managerId = next.getManagerId();
-            User userByKey = userService.getUserByKey(managerId);
-            if (userByKey != null){
-                next.setManagerName(userByKey.getName());
-            }
-        }
-
         AjaxResult ajaxResult = new AjaxResult();
         ajaxResult.put("data",projectList);
         return ajaxResult;
@@ -105,12 +94,9 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/listWithPage.do")
     public AjaxResult ListWithPage(Integer pageNo,String name,Integer brandId){
-
         ProjectQuery projectQuery = new ProjectQuery();
         //设置页号
         projectQuery.setPageNo(Pagination.cpn(pageNo));
-        //设置每页数
-        projectQuery.setPageSize(5);
 
         Pagination pagination = projectService.getProjectListWithPage(projectQuery);
 

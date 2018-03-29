@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.xdc.dao.Inv_UserDao">
-
-	<resultMap type="Inv_User" id="inv_UserMap">
-		<result column="invId" property="invId"/>
-		<result column="userId" property="userId"/>
-		<result column="role" property="role"/>
-		<result column="distributionNum" property="distributionNum"/>
-		<result column="comment" property="comment"/>
-	</resultMap>
+<mapper namespace="cn.xdc.dao.Inv_userDao">
 
 	<sql id="selector">
 		select *
@@ -62,17 +54,35 @@
 	</sql>
 
 	<!-- 查询集合 -->
-	<select id="getInv_UserList" parameterType="Inv_UserQuery" resultMap="inv_UserMap">
+	<select id="getInv_userList" parameterType="Inv_userQuery" resultType="Inv_userVo">
 		<include refid="selector"/>
 		<include refid="where"/>
 		<include refid="orderBy"/>
 	</select>
 
+	<!-- 分页 -->
+	<select id="getInv_userListWithPage" parameterType="Inv_userQuery" resultType="Inv_userVo">
+		<include refid="selector" />
+		<include refid="where" />
+		<include refid="limit" />
+	</select>
+
+	<sql id="limit">
+		<if test="startRow != null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</sql>
+
+	<!-- 数据总数 -->
+	<select id="getInv_userListCount" parameterType="Inv_userQuery" resultType="int">
+		SELECT count(1) FROM gy_inv_user
+		<include refid="where"/>
+	</select>
+
 	<!-- 添加 -->
-	<insert id="addInv_User" parameterType="Inv_User">
+	<insert id="addInv_user" parameterType="Inv_user">
 		insert into gy_inv_user
 		<trim prefix="(" suffix=")">
-				invId,
 				userId,
 				role,
 				distributionNum,
@@ -80,7 +90,6 @@
 		</trim>
 		values
 		<trim prefix="(" suffix=")">
-				#{invId},
 				#{userId},
 				#{role},
 				#{distributionNum},
@@ -89,7 +98,7 @@
 	</insert>
 
 	<!-- 删除 通过主键 -->
-	<delete id="deleteInv_UserByKey" parameterType="Integer">
+	<delete id="deleteInv_userByKey" parameterType="Integer">
 		delete from gy_inv_user
 		<where>
 			invId = #{invId}
@@ -97,7 +106,7 @@
 	</delete>
 
 	<!-- 批量删除 -->
-	<delete id="deleteInv_UserByKeys" parameterType="Integer">
+	<delete id="deleteInv_userByKeys" parameterType="Integer">
 		delete from gy_inv_user
 		<where>
 			invId in
@@ -108,7 +117,7 @@
 	</delete>
 
 	<!-- 修改 -->
-	<update id="updateInv_UserByKey" parameterType="Inv_User">
+	<update id="updateInv_userByKey" parameterType="Inv_user">
 		update gy_inv_user
 		<set>
 			<if test="userId != null">
@@ -130,7 +139,7 @@
 	</update>
 
 	<!-- 通过ID查询一个品牌对象 -->
-	<select id="getInv_UserByKey" parameterType="Integer" resultMap="inv_UserMap">
+	<select id="getInv_userByKey" parameterType="Integer" resultType="Inv_user">
 		select *
 		from gy_inv_user
 		<where>
