@@ -4,7 +4,7 @@ import cn.xdc.bean.Project;
 
 public class ProjectVo extends Project{
 
-    private String managerName;
+    private String managerName;  // 经理名
     private String supervisionName;  // 督导
     private String qualityIdName;  // 质检
 

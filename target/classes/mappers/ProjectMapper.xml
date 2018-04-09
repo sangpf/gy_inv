@@ -147,6 +147,7 @@
 
 	<!-- Order by -->
 	<sql id="orderBy">
+		ORDER BY cTime DESC
 	</sql>
 
 	<!-- 查询集合 -->
@@ -160,6 +161,7 @@
 	<select id="getProjectListWithPage" parameterType="ProjectQuery" resultType="ProjectVo">
 		<include refid="selector" />
 		<include refid="where" />
+		<include refid="orderBy"/>
 		<include refid="limit" />
 	</select>
 

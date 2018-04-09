@@ -97,8 +97,9 @@
 		</trim>
 	</insert>
 
-	<!-- 删除 通过主键 -->
-	<delete id="deleteInv_userByKey" parameterType="Integer">
+
+	<!-- 删除 一份调查中所有绑定的调查员 -->
+	<delete id="deleteInv_usersBy_invId" parameterType="Integer">
 		delete from gy_inv_user
 		<where>
 			invId = #{invId}
@@ -120,9 +121,6 @@
 	<update id="updateInv_userByKey" parameterType="Inv_user">
 		update gy_inv_user
 		<set>
-			<if test="userId != null">
-				userId = #{userId},
-			</if>
 			<if test="role != null">
 				role = #{role},
 			</if>
@@ -134,12 +132,12 @@
 			</if>
 		</set>
 		<where>
-			invId = #{invId}
+			invId = #{invId} AND userId = #{userId}
 		</where>
 	</update>
 
-	<!-- 通过ID查询一个品牌对象 -->
-	<select id="getInv_userByKey" parameterType="Integer" resultType="Inv_user">
+	<!-- 查询一个调查所有绑定的调查员 -->
+	<select id="getInv_userByKey" parameterType="Integer" resultType="Inv_userVo">
 		select *
 		from gy_inv_user
 		<where>

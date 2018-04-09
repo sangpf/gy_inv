@@ -16,6 +16,16 @@ public class Inv_userVo extends Inv_user {
     private Date bTime;
     private Date eTime;
     private String groupLeaderName; // 组长
+    private String userName; // 调查员姓名
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getProjectName() {
         return projectName;

@@ -28,7 +28,6 @@ cn\xdc\bean\query\ClientQuery$FieldOrder.class
 cn\xdc\service\QuestionServiceImpl.class
 cn\xdc\bean\query\OptionQuery.class
 cn\xdc\Application.class
-cn\xdc\redis\RedisSessionConfig.class
 cn\xdc\bean\vo\Inv_userVo.class
 cn\xdc\bean\Option.class
 cn\xdc\web\UserController.class

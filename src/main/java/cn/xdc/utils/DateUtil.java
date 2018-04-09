@@ -18,7 +18,7 @@ public class DateUtil {
 		if (date == null){
 			return "";
 		}
-		return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
 
 	/**

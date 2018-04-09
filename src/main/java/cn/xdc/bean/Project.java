@@ -147,4 +147,27 @@ public class Project implements Serializable{
 	public void setClientAddress(String clientAddress) {
 		this.clientAddress = clientAddress;
 	}
+
+	@Override
+	public String toString() {
+		return "Project{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", type=" + type +
+				", cTime=" + cTime +
+				", bTime=" + bTime +
+				", eTime=" + eTime +
+				", status=" + status +
+				", summary='" + summary + '\'' +
+				", targetNum=" + targetNum +
+				", managerId=" + managerId +
+				", supervisionId=" + supervisionId +
+				", qualityId=" + qualityId +
+				", clientName='" + clientName + '\'' +
+				", clientPhone='" + clientPhone + '\'' +
+				", clientCompany='" + clientCompany + '\'' +
+				", clientAddress='" + clientAddress + '\'' +
+				", comment='" + comment + '\'' +
+				'}';
+	}
 }

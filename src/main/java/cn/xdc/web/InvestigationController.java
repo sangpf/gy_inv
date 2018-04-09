@@ -3,7 +3,9 @@ package cn.xdc.web;
 import cn.xdc.bean.Inv_user;
 import cn.xdc.bean.Investigation;
 import cn.xdc.bean.User;
+import cn.xdc.bean.query.Inv_userQuery;
 import cn.xdc.bean.query.InvestigationQuery;
+import cn.xdc.bean.vo.Inv_userVo;
 import cn.xdc.bean.vo.InvestigationVo;
 import cn.xdc.common.page.Pagination;
 import cn.xdc.service.Inv_userService;
@@ -52,22 +54,8 @@ public class InvestigationController {
     public AjaxResult add(Investigation investigation, Integer[] userIds){
         AjaxResult ajaxResult = new AjaxResult();
         try {
-            investigationService.addInvestigation(investigation);
-            // 添加组员
-            if (userIds != null && userIds.length > 0){
-                for (Integer userId : userIds){
-                    Inv_user inv_user = new Inv_user();
-                    inv_user.setUserId(userId);
-                    inv_user.setInvId(investigation.getInvId());
-                    inv_user.setRole(1);
-                    inv_user.setDistributionNum(100);
-                    try {
-                        inv_userService.addInv_user(inv_user);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            investigationService.addInvestigation(investigation, userIds);
+
             ajaxResult.put("success", true);
             ajaxResult.put("msg", "成功");
             ajaxResult.put("data",investigation);
@@ -81,9 +69,12 @@ public class InvestigationController {
     //修改
     @ResponseBody
     @RequestMapping(value = "/edit.do")
-    public AjaxResult edit(Investigation investigation,ModelMap model){
+    public AjaxResult edit(Investigation investigation, Integer[] userIds){
+        if (investigation.getInvId() == null){
+            return AjaxResult.errorResult("调查Id 为 null");
+        }
         try {
-            investigationService.updateInvestigationByKey(investigation);
+            investigationService.updateInvestigationByKey(investigation,userIds);
         } catch (Exception e) {
             e.printStackTrace();
             return AjaxResult.errorResult();
@@ -116,12 +107,33 @@ public class InvestigationController {
         return AjaxResult.successData(investigationList);
     }
 
+    // 查询一份调查里 绑定了哪些调查员
+    @ResponseBody
+    @RequestMapping(value = "/getInv_usersBy_invId.do")
+    public AjaxResult getInv_usersBy_invId(Integer invId){
+
+        if (invId == null){
+            return AjaxResult.errorResult("invId is null");
+        }
+        Inv_userQuery inv_userQuery = new Inv_userQuery();
+        inv_userQuery.setInvId(invId);
+
+        List<Inv_userVo> inv_userByKey_list = inv_userService.getInv_userByKey(invId);
+
+        return AjaxResult.successData(inv_userByKey_list);
+    }
+
     //分页列表
     @ResponseBody
     @RequestMapping(value = "/listWithPage.do")
     public AjaxResult ListWithPage(Integer pageNo,Investigation investigation){
 
         InvestigationQuery investigationQuery = new InvestigationQuery();
+        investigationQuery.setInvStatus(investigation.getInvStatus());
+        investigationQuery.setGroupLeaderId(investigation.getGroupLeaderId());
+        investigationQuery.setInvName(investigation.getInvName());
+        investigationQuery.setInvNameLike(true);
+
         //设置页号
         investigationQuery.setPageNo(Pagination.cpn(pageNo));
         Pagination pagination = investigationService.getInvestigationListWithPage(investigationQuery);

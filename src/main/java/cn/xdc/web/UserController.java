@@ -9,6 +9,7 @@ import cn.xdc.service.Inv_userService;
 import cn.xdc.service.UserService;
 import cn.xdc.utils.AjaxResult;
 import cn.xdc.utils.StrUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +26,7 @@ import java.util.List;
 @RequestMapping(value = "/user")
 @Controller
 public class UserController {
+    private static Logger log = Logger.getLogger(Object.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -48,7 +50,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/edit.do")
     public AjaxResult edit(User user,ModelMap model){
-
+        if (user.getUserId() == null){
+            return AjaxResult.errorResult("userId 为空");
+        }
         try {
             userService.updateUserByKey(user);
         } catch (Exception e) {
@@ -62,6 +66,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/list.do")
     public AjaxResult list(User user, HttpServletResponse response){
+        log.info("===================>> 查询用户列表");
         AjaxResult ajaxResult = new AjaxResult();
 
         UserQuery userQuery = new UserQuery();
@@ -83,6 +88,13 @@ public class UserController {
             return AjaxResult.errorResult("pageNo 缺少");
         }
         UserQuery userQuery = new UserQuery();
+        userQuery.setName(user.getName());
+        userQuery.setNameLike(true);
+        userQuery.setGender(user.getGender());
+        userQuery.setWxName(user.getWxName());
+        userQuery.setWxNameLike(true);
+        userQuery.setIsValid(user.getIsValid());
+
         //设置页号
         userQuery.setPageNo(Pagination.cpn(pageNo));
 
@@ -122,19 +134,4 @@ public class UserController {
         return AjaxResult.successResult();
     }
 
-    // ----------------------- 测试 session 共享 ----------------------
-    @RequestMapping("/test_session_add.do")
-    public void test_session_add(HttpServletRequest request){
-        HttpSession session = request.getSession();
-
-        long currentTimeMillis = System.currentTimeMillis();
-        session.setAttribute("wangfei", "王菲在唱歌"+currentTimeMillis);
-    }
-    @RequestMapping("/test_session_get.do")
-    public void test_session_get(HttpServletRequest request){
-        HttpSession session = request.getSession();
-
-        Object userName = session.getAttribute("wangfei");
-        System.out.println("--------------------- "+userName);
-    }
 }

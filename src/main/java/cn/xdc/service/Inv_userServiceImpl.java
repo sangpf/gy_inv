@@ -35,8 +35,8 @@ public class Inv_userServiceImpl implements Inv_userService{
         inv_userDao.addInv_user(inv_user);
     }
 
-    public void deleteInv_userByKey(Integer id) {
-        inv_userDao.deleteInv_userByKey(id);
+    public void deleteInv_usersBy_invId(Integer id) {
+        inv_userDao.deleteInv_usersBy_invId(id);
     }
 
     public void deleteInv_userByKeys(Integer[] ids) {
@@ -47,8 +47,21 @@ public class Inv_userServiceImpl implements Inv_userService{
         inv_userDao.updateInv_userByKey(inv_user);
     }
 
-    public Inv_user getInv_userByKey(Integer id) {
-        return inv_userDao.getInv_userByKey(id);
+    public List<Inv_userVo> getInv_userByKey(Integer id) {
+
+        List<Inv_userVo> inv_userByKey = inv_userDao.getInv_userByKey(id);
+        Iterator<Inv_userVo> iterator = inv_userByKey.iterator();
+        while (iterator.hasNext()){
+            Inv_userVo next = iterator.next();
+            Integer userId = next.getUserId();
+
+            User userByKey = userDao.getUserByKey(userId);
+            if (userByKey != null){
+                next.setUserName(userByKey.getName());
+            }
+
+        }
+        return inv_userByKey;
     }
 
     @Transactional(readOnly = true)

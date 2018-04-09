@@ -21,13 +21,15 @@ public interface Inv_userService {
 
 	//添加
 	public void addInv_user(Inv_user inv_user);
-	//删除
-	public void deleteInv_userByKey(Integer id);
+
+	//删除 一份调查中所有绑定的调查员
+	public void deleteInv_usersBy_invId(Integer id);
+
 	//删除 批量
 	public void deleteInv_userByKeys(Integer[] ids); //List<Integer>  ids
 	//修改
 	public void updateInv_userByKey(Inv_user inv_user);
 
 	//根据id 查询
-	public Inv_user getInv_userByKey(Integer id);
+	List<Inv_userVo> getInv_userByKey(Integer id);
 }

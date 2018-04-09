@@ -139,6 +139,7 @@
 
 	<!-- Order by -->
 	<sql id="orderBy">
+		ORDER BY cTime DESC
 	</sql>
 
 	<!-- 查询集合 -->
@@ -152,8 +153,9 @@
 	<select id="getUserListWithPage" parameterType="UserQuery" resultType="UserVo">
 		<include refid="selector" />
 		<include refid="where" />
-		<include refid="limit" />
-	</select>
+		<include refid="orderBy"/>
+        <include refid="limit" />
+    </select>
 
 	<sql id="limit">
 		<if test="startRow != null">

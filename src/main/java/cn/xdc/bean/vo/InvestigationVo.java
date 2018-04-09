@@ -6,7 +6,14 @@ public class InvestigationVo extends Investigation {
 
     private String groupLeaderName;
     private String groupLeaderNum;
+    private String projectName;
 
+    public String getProjectName() {
+        return projectName;
+    }
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
     public String getGroupLeaderName() {
         return groupLeaderName;
     }

@@ -8,6 +8,8 @@ import cn.xdc.common.page.Pagination;
 import cn.xdc.service.ProjectService;
 import cn.xdc.service.UserService;
 import cn.xdc.utils.AjaxResult;
+import cn.xdc.utils.StrUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,7 @@ import java.util.List;
 @RequestMapping(value = "/project")
 @Controller
 public class ProjectController {
+    private static Logger log = Logger.getLogger(Object.class);
 
     @Autowired
     private ProjectService projectService;
@@ -65,6 +68,10 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/edit.do")
     public AjaxResult edit(Project project,ModelMap model){
+        log.info("==================>> 编辑项目 project : "+project.toString());
+        if (project.getId() == null){
+            return AjaxResult.errorResult("id is null");
+        }
         try {
             projectService.updateProjectByKey(project);
         } catch (Exception e) {
@@ -78,6 +85,7 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/list.do")
     public AjaxResult list(Project project, HttpServletResponse response){
+        log.info("===================>> 查询项目列表");
         ProjectQuery projectQuery = new ProjectQuery();
         projectQuery.setId(project.getId());
         projectQuery.setTitle(project.getTitle());
@@ -93,8 +101,10 @@ public class ProjectController {
     //分页列表
     @ResponseBody
     @RequestMapping(value = "/listWithPage.do")
-    public AjaxResult ListWithPage(Integer pageNo,String name,Integer brandId){
+    public AjaxResult ListWithPage(Integer pageNo,Project project){
         ProjectQuery projectQuery = new ProjectQuery();
+        projectQuery.setManagerId(project.getManagerId());
+        projectQuery.setStatus(project.getStatus()); // 1.准备阶段 2.调查开始阶段 3.调查结束阶段 4.数据分析阶段 5.项目结束
         //设置页号
         projectQuery.setPageNo(Pagination.cpn(pageNo));
 
