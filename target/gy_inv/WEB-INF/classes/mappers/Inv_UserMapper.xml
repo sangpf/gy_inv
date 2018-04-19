@@ -83,6 +83,7 @@
 	<insert id="addInv_user" parameterType="Inv_user">
 		insert into gy_inv_user
 		<trim prefix="(" suffix=")">
+				invId,
 				userId,
 				role,
 				distributionNum,
@@ -90,13 +91,13 @@
 		</trim>
 		values
 		<trim prefix="(" suffix=")">
+				#{invId},
 				#{userId},
 				#{role},
 				#{distributionNum},
 				#{comment}
 		</trim>
 	</insert>
-
 
 	<!-- 删除 一份调查中所有绑定的调查员 -->
 	<delete id="deleteInv_usersBy_invId" parameterType="Integer">

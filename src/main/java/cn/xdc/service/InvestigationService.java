@@ -20,13 +20,13 @@ public interface InvestigationService {
 	public Pagination getInvestigationListWithPage(InvestigationQuery projectQuery);
 
 	//添加
-	public void addInvestigation(Investigation entity,Integer[] userIds);
+	public void addInvestigation(Investigation entity,String[] userIds);
 	//删除
 	public void deleteInvestigationByKey(Integer id);
 	//删除 批量
 	public void deleteInvestigationByKeys(Integer[] ids); //List<Integer>  ids
 	//修改
-	public void updateInvestigationByKey(Investigation entity,Integer[] userIds);
+	public void updateInvestigationByKey(Investigation entity,String[] userIds);
 	//根据id 查询
 	public Investigation getInvestigationByKey(Integer id);
 }

@@ -12,6 +12,7 @@ import cn.xdc.service.Inv_userService;
 import cn.xdc.service.InvestigationService;
 import cn.xdc.service.UserService;
 import cn.xdc.utils.AjaxResult;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequestMapping(value = "/investigation")
 @Controller
 public class InvestigationController {
+    private static Logger log = Logger.getLogger(Object.class);
     @Autowired
     private InvestigationService investigationService;
     @Autowired
@@ -51,7 +53,7 @@ public class InvestigationController {
     //添加
     @ResponseBody
     @RequestMapping(value = "/add.do",method = RequestMethod.POST)
-    public AjaxResult add(Investigation investigation, Integer[] userIds){
+    public AjaxResult add(Investigation investigation, String[] userIds){
         AjaxResult ajaxResult = new AjaxResult();
         try {
             investigationService.addInvestigation(investigation, userIds);
@@ -69,7 +71,8 @@ public class InvestigationController {
     //修改
     @ResponseBody
     @RequestMapping(value = "/edit.do")
-    public AjaxResult edit(Investigation investigation, Integer[] userIds){
+    public AjaxResult edit(Investigation investigation, String[] userIds){
+        log.info("===============>> 编辑调查信息, invId 为 :"+investigation.getInvId());
         if (investigation.getInvId() == null){
             return AjaxResult.errorResult("调查Id 为 null");
         }

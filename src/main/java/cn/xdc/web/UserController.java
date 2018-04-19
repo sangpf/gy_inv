@@ -8,7 +8,6 @@ import cn.xdc.common.page.Pagination;
 import cn.xdc.service.Inv_userService;
 import cn.xdc.service.UserService;
 import cn.xdc.utils.AjaxResult;
-import cn.xdc.utils.StrUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +63,11 @@ public class UserController {
     //列表
     @ResponseBody
     @RequestMapping(value = "/list.do")
-    public AjaxResult list(User user, HttpServletResponse response){
+    public AjaxResult list(User user, HttpServletRequest request){
+
+        User user1 = (User)request.getSession().getAttribute("user");
+        System.out.println("=======================================>> session 中获取用户信息 : "+user1);
+
         log.info("===================>> 查询用户列表");
         AjaxResult ajaxResult = new AjaxResult();
 

@@ -186,6 +186,7 @@
 				evaluation,
 				identityId,
 				bankCard,
+				bank,
 				telephone,
 				isValid,
 				comment
@@ -205,6 +206,7 @@
 				#{evaluation},
 				#{identityId},
 				#{bankCard},
+				#{bank},
 				#{telephone},
 				#{isValid},
 				#{comment}
@@ -269,6 +271,9 @@
 			</if>
 			<if test="bankCard != null">
 				bankCard = #{bankCard},
+			</if>
+			<if test="bank != null">
+				bank = #{bank},
 			</if>
 			<if test="telephone != null">
 				telephone = #{telephone},

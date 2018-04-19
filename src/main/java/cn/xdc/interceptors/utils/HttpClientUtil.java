@@ -22,7 +22,7 @@ import java.util.Map;
 public class HttpClientUtil {
 	
 	public static String doGet(String url) {							// 无参数get请求
-		System.out.println("url : " + url);
+		System.out.println("====================>> 其他服务中 请求sso服务获取 redis中的user值, 请求地址 url : " + url);
 		return doGet(url, null);
 	}
 

@@ -23,8 +23,8 @@ public class TokenService {
     public User getUserByToken(String token) {
         try {
             // 调用sso系统的服务，根据token取用户信息
-            String json = HttpClientUtil.doGet(SSO_BASE_URL + SSO_USER_TOKEN + token);
-            System.out.println("json : " + json);
+            String json = HttpClientUtil.doGet(SSO_DOMAIN_BASE_USRL + SSO_USER_TOKEN + token);
+            System.out.println("从sso服务请求到 json值为 : " + json);
             // 把json转换成ItdragonResult
             ItdragonResult result = ItdragonResult.formatToPojo(json, User.class);
             if (null != result && result.getStatus() == 200) {

@@ -116,7 +116,8 @@ public class ProjectController {
     //删除多个
     @ResponseBody
     @RequestMapping(value = "/deletes.do")
-    public AjaxResult deletes(Integer[] ids,String name,Integer isDisplay,ModelMap model){
+    public AjaxResult deletes(Integer[] ids){
+        log.info("========================>> 批量删除项目 , 参数 ids : "+ids);
         try {
             projectService.deleteProjectByKeys(ids);
         } catch (Exception e) {

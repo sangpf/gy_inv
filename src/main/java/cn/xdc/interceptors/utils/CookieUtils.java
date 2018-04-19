@@ -1,5 +1,7 @@
 package cn.xdc.interceptors.utils;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public final class CookieUtils {
+    private static Logger log = Logger.getLogger(Object.class);
     /**
      * 获取 Cookie的值, 不编码
      */
@@ -26,6 +29,7 @@ public final class CookieUtils {
         String retValue = null;
         try {
             for (int i = 0; i < cookieList.length; i++) {
+                log.info("======================从request中获取cookie :"+ cookieList[i].getName());
                 if (cookieList[i].getName().equals(cookieName)) {
                     retValue = isDecoder? URLDecoder.decode(cookieList[i].getValue(), "UTF-8"):cookieList[i].getValue();
                     break;

@@ -7,6 +7,7 @@ import cn.xdc.bean.vo.ProjectVo;
 import cn.xdc.common.page.Pagination;
 import cn.xdc.dao.ProjectDao;
 import cn.xdc.dao.UserDao;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ProjectServiceImpl implements ProjectService{
-
+    private static Logger log = Logger.getLogger(Object.class);
     @Resource
     private ProjectDao projectDao;
     @Resource
@@ -32,6 +33,12 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     public void deleteProjectByKeys(Integer[] ids) {
+        log.info("==================>> 批量删除项目, ids : "+ids.length);
+
+        for (Integer id : ids){
+            log.info("================>> 删除的id :"+id);
+        }
+
         projectDao.deleteProjectByKeys(ids);
     }
 

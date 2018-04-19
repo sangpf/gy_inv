@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,19 +50,28 @@ public class Inv_userServiceImpl implements Inv_userService{
 
     public List<Inv_userVo> getInv_userByKey(Integer id) {
 
+        // 定义要返回的列表
+        List<Inv_userVo> dataList = new ArrayList<>();
+
+        // 查询出所有的关联记录
         List<Inv_userVo> inv_userByKey = inv_userDao.getInv_userByKey(id);
         Iterator<Inv_userVo> iterator = inv_userByKey.iterator();
         while (iterator.hasNext()){
             Inv_userVo next = iterator.next();
             Integer userId = next.getUserId();
 
+            // 此处还需要判断调查员的状态, 是否在职, 离职等
+
             User userByKey = userDao.getUserByKey(userId);
             if (userByKey != null){
                 next.setUserName(userByKey.getName());
+
+                // 关联表中有记录, 但是该关联的调查员已经被删除, 所以此时查询不到该调查员 , 已经将该调查员从列表中移除
+                dataList.add(next);
             }
 
         }
-        return inv_userByKey;
+        return dataList;
     }
 
     @Transactional(readOnly = true)

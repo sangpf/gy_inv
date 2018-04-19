@@ -2,18 +2,12 @@ server:
   port: 8082
 
 spring:
-# 数据源
+# 数据库
   datasource:
-     url: jdbc:mysql://101.200.166.221:3306/guoyan?characterEncoding=UTF-8
-     username: developer
-     password: xindongchadb
+     url: jdbc:mysql://39.104.160.80:3306/guoyan?characterEncoding=UTF-8
+     username: gydb
+     password: gy123456
      driver-class-name: com.mysql.jdbc.Driver
-# 生产数据库
-#  datasource:
-#     url: jdbc:mysql://39.104.121.192:3306/guoyan?characterEncoding=UTF-8
-#     username: gydb
-#     password: gy123456
-#     driver-class-name: com.mysql.jdbc.Driver
 
 # 配置redis
   redis:
